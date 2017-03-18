@@ -6,26 +6,38 @@
 /* TCD Pins */
 
 // PWM frequency
-#define master_clock_freq 400000 // roughly 2500 ns per period (400 kHz)
+#define master_clock_freq 400000 // 2500 ns per period (400 kHz)
 
 // pwm pin
 #define pwm_out 3
 // pin measuring pwm
-#define pwm_in 7
+#define pwm_in 4 //7
 // integration clear gate and shift
-#define ICG 8
-#define SH 9
-// Output
-#define OS 1
+#define ICG 5 // 8
+#define SH 6 // 9
+
+// ADC pins
+#define LSB 14
+#define B2 15
+#define B3 16
+#define B4 17
+#define B5 18
+#define B6 19
+#define B7 20
+#define MSB 21
 
 // SH_LOW_TIMER determines total exposure time
 // No shutter exposure time ~ 7500us
+// 80us EXPOSURE 50 80, t1pulse 18, syncpulse 25
+// 100us EXPOSURE 70 100, t1pulse 20, syncpulse 30
 // 120us EXPOSURE 80 120, with 25 t1pulse, 30 end wait pulse
 // 200us EXPOSURE  150 200, t1pulse 35, syncpulse 50
-#define SH_HIGH_TIMER 150
-#define SH_LOW_TIMER 200
-#define T1_PULSE_COUNT 35
-#define SYNC_PULSE_COUNT 50
+#define SH_HIGH_TIMER 50
+#define SH_LOW_TIMER 80
+#define T1_PULSE_COUNT 18
+#define SYNC_PULSE_COUNT 23
+
+#define AVG_APLHA 0.07
 
 #define ICG_HIGH() digitalWriteFast(ICG,HIGH)
 #define ICG_LOW() digitalWriteFast(ICG,LOW)

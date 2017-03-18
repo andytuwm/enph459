@@ -1,6 +1,7 @@
 #include "img_sensor.h"
 
 IntervalTimer sh_up, sh_down;
+uint16_t running_avg = 0;
 
 void initialize_sensor() {
 	// stop interval timers
@@ -22,7 +23,7 @@ void handshake() {
 	// digital write used since it takes approx. 830 ns.
 	digitalWrite(SH, HIGH); //  t3 start
 	sh_down.begin(sh_first_pulse_down, t3_pulse_length);
-	
+
 	// wait for some pulses before starting measurement
 	wait_clock_rising_counts(t1_pulse);
 }
@@ -61,13 +62,44 @@ void wait_clock_rising_counts(int n) {
 }
 
 int wait_while_reading(int n) {
+	uint8_t num = 255;
+	uint8_t b1, b2, b3, b4, b5, b6, b7, b8;
+	uint8_t values[n];
+	uint16_t min_i;
+
 	for (uint16_t c = 0; c < n; c++) {
-		// read value
-		// int value = analogRead(OS);
-		// Serial.println(value);
 		// wait two periods
-		wait_clock_rising_counts(2);
+		wait_clock_rising_counts(1);
+
+		b1 = digitalReadFast(LSB);
+		b2 = digitalReadFast(B2);
+		b3 = digitalReadFast(B3);
+		b4 = digitalReadFast(B4);
+		b5 = digitalReadFast(B5);
+		b6 = digitalReadFast(B6);
+		b7 = digitalReadFast(B7);
+		b8 = digitalReadFast(MSB);
+
+		values[c] = b8 << 7 | b7 << 6 | b6 << 5 | b5 << 4 | b4 << 3 | b3 << 2 | b2 << 1 | b1;
+		if (values[c] < num) {
+			num = values[c];
+			min_i = c;
+		}
+
+		wait_clock_rising_counts(1);
 	}
+
+	// for (uint16_t j = 0; j < n; j++){
+	// 	Serial.println(values[j]);
+	// }
+
+	running_avg = (AVG_APLHA * min_i) + (1.0 - AVG_APLHA) * running_avg;
+
+	Serial.println(num);
+	Serial.println(min_i);
+	Serial.println(running_avg);
+
+	// return values;
 }
 
 /* ISRs */
