@@ -26,6 +26,11 @@ void setup() {
     pinMode(B6, INPUT);
     pinMode(B7, INPUT);
     pinMode(MSB, INPUT);
+    pinMode(B_LEFT, INPUT);
+    pinMode(B_RIGHT, INPUT);
+
+    attachInterrupt(B_LEFT, led_off, RISING);
+    attachInterrupt(B_RIGHT, led_on, RISING);
 
     // configure pwm pins 2,3,4 to set frequency
     analogWriteFrequency(pwm_out, master_clock_freq);
@@ -39,12 +44,27 @@ void setup() {
     Serial.begin(9600);
 
     //Talk to the Serial7Segment at 9600 bps
-    Serial7Segment.begin(9600); 
+    Serial7Segment.begin(9600);
     // clear display
     Serial7Segment.write(0x76);
     // Brightness control command
-    Serial7Segment.write(0x7A);  
+    Serial7Segment.write(0x7A);
     Serial7Segment.write((byte) 120);  // 0 is dimmest, 255 is brightest
+}
+
+
+void led_on()
+{
+    cli();
+    LED_ON();
+    sei();
+}
+
+void led_off()
+{
+    cli();
+    LED_OFF();
+    sei();
 }
 
 float i = 0;
@@ -63,6 +83,7 @@ void loop() {
     // Serial7Segment.write(" ");
     // Serial7Segment.print((int) (2.68*100));
     // delay(500);
-    Serial.println("=================");
+
+    // Serial.println("=================");
 }
 

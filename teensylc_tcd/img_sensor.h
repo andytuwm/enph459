@@ -26,6 +26,10 @@
 #define B7 20
 #define MSB 21
 
+// Buttons
+#define B_LEFT 22
+#define B_RIGHT 23
+
 // SH_LOW_TIMER determines total exposure time
 // No shutter exposure time ~ 7500us
 // 80us EXPOSURE 50 80, t1pulse 18, syncpulse 25
