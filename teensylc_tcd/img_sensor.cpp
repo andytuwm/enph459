@@ -72,7 +72,6 @@ uint16_t wait_while_reading(int n) {
 
 	for (uint16_t c = 0; c < n; c++) {
 		// wait two periods
-		wait_clock_rising_counts(1);
 
 		b1 = digitalReadFast(LSB);
 		b2 = digitalReadFast(B2);
@@ -80,6 +79,9 @@ uint16_t wait_while_reading(int n) {
 		b4 = digitalReadFast(B4);
 		b5 = digitalReadFast(B5);
 		b6 = digitalReadFast(B6);
+		
+		wait_clock_rising_counts(1);
+
 		b7 = digitalReadFast(B7);
 		b8 = digitalReadFast(MSB);
 
