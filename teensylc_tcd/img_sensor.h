@@ -1,7 +1,7 @@
 #ifndef IMG_SENSOR_H
 #define IMG_SENSOR_H
 
-#include <Arduino.h>	
+#include <Arduino.h>
 
 /* TCD Pins */
 
@@ -11,20 +11,20 @@
 // pwm pin
 #define pwm_out 3
 // pin measuring pwm
-#define pwm_in 4 //7
+#define pwm_in 4
 // integration clear gate and shift
-#define ICG 5 // 8
-#define SH 6 // 9
+#define ICG 5
+#define SH 6
 
 // ADC pins
-#define LSB 14
-#define B2 15
-#define B3 16
-#define B4 17
-#define B5 18
-#define B6 19
-#define B7 20
-#define MSB 21
+#define MSB 14
+#define B7 15
+#define B6 16
+#define B5 17
+#define B4 18
+#define B3 19
+#define B2 20
+#define LSB 21
 
 // Buttons
 #define B_LEFT 22
@@ -41,7 +41,7 @@
 #define T1_PULSE_COUNT 18
 #define SYNC_PULSE_COUNT 23
 
-#define AVG_APLHA 0.07
+#define AVG_APLHA 0.1 //prev value 0.07
 
 #define ICG_HIGH() digitalWriteFast(ICG,HIGH)
 #define ICG_LOW() digitalWriteFast(ICG,LOW)

@@ -1,4 +1,5 @@
 #include "img_sensor.h"
+#include "disp.h"
 
 IntervalTimer sh_up, sh_down;
 uint16_t running_avg = 0;
@@ -89,17 +90,16 @@ int wait_while_reading(int n) {
 		wait_clock_rising_counts(1);
 	}
 
-	// for (uint16_t j = 0; j < n; j++){
-	// 	Serial.println(values[j]);
-	// }
-
+	// compute running avg of peak readings
 	running_avg = (AVG_APLHA * min_i) + (1.0 - AVG_APLHA) * running_avg;
+	// display peak reading
+	update_disp(running_avg);
 
-	Serial.println(num);
-	Serial.println(min_i);
+	//TODO convert peak index to a mm reading
+
+	// Serial.println(num);
+	// Serial.println(min_i);
 	Serial.println(running_avg);
-
-	// return values;
 }
 
 /* ISRs */
