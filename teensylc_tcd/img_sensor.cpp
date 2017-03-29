@@ -29,7 +29,7 @@ void handshake() {
 	wait_clock_rising_counts(t1_pulse);
 }
 
-void capture() {
+uint16_t capture() {
 	handshake();
 
 	// start measurements
@@ -37,12 +37,13 @@ void capture() {
 	ICG_HIGH();
 
 	// element readout time
-	wait_while_reading(1546); // 1546 elements
+	uint16_t val = wait_while_reading(1546); // 1546 elements
 
 	// reset conditions
 	initialize_sensor();
 	// last integration time should be slightly longer to allow resynchronization
 	wait_clock_rising_counts(SYNC_PULSE_COUNT);
+	return val;
 }
 
 void wait_for_rising_edge() {
@@ -62,7 +63,7 @@ void wait_clock_rising_counts(int n) {
 	}
 }
 
-int wait_while_reading(int n) {
+uint16_t wait_while_reading(int n) {
 	uint8_t num = 255;
 	uint8_t b1, b2, b3, b4, b5, b6, b7, b8;
 	uint8_t values[n];
@@ -100,6 +101,7 @@ int wait_while_reading(int n) {
 	// Serial.println(num);
 	// Serial.println(min_i);
 	Serial.println(running_avg);
+	return running_avg;
 }
 
 /* ISRs */

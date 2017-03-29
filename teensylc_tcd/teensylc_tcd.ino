@@ -6,6 +6,9 @@
 #define LED_ON() digitalWriteFast(LED,HIGH)
 #define LED_OFF() digitalWriteFast(LED,LOW)
 
+volatile bool in_measurement = false;
+volatile uint16_t last_measurement = 0;
+
 // Setup
 void setup() {
     // initialize digital pins
@@ -25,8 +28,8 @@ void setup() {
     pinMode(B_LEFT, INPUT);
     pinMode(B_RIGHT, INPUT);
 
-    attachInterrupt(B_LEFT, led_off, RISING);
-    attachInterrupt(B_RIGHT, led_on, RISING);
+    attachInterrupt(B_LEFT, led_on, RISING);
+    attachInterrupt(B_RIGHT, led_off, RISING);
 
     // configure pwm pins 2,3,4 to set frequency
     analogWriteFrequency(pwm_out, master_clock_freq);
@@ -47,6 +50,7 @@ void led_on()
 {
     cli();
     LED_ON();
+    in_measurement = true;
     sei();
 }
 
@@ -54,13 +58,16 @@ void led_off()
 {
     cli();
     LED_OFF();
+    in_measurement = false;
+    update_disp(last_measurement);
     sei();
 }
 
-float i = 0;
 // Main Loop
 void loop() {
-    capture();
+    if (in_measurement == true) {
+        last_measurement = capture();
+    }
 
     // Serial7Segment.write(0x76);
     // Serial7Segment.print((int)(20.68 * 100));

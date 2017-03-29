@@ -53,11 +53,11 @@ extern IntervalTimer sh_down;
 
 void initialize_sensor();
 void handshake();
-void capture();
+uint16_t capture();
 void wait_for_rising_edge();
 void wait_for_falling_edge();
 void wait_clock_rising_counts(int n);
-int wait_while_reading(int n);
+uint16_t wait_while_reading(int n);
 void sh_first_pulse_down();
 void sh_up_wrapper();
 void sh_down_wrapper();
