@@ -42,6 +42,7 @@
 #define SYNC_PULSE_COUNT 23
 
 #define AVG_APLHA 0.1 //prev value 0.07
+#define CALIBRATION_N 10
 
 #define ICG_HIGH() digitalWriteFast(ICG,HIGH)
 #define ICG_LOW() digitalWriteFast(ICG,LOW)
@@ -50,10 +51,12 @@
 
 extern IntervalTimer sh_up;
 extern IntervalTimer sh_down;
+extern int initial;
 
 void initialize_sensor();
 void handshake();
 uint16_t capture();
+int calibration();
 void wait_for_rising_edge();
 void wait_for_falling_edge();
 void wait_clock_rising_counts(int n);

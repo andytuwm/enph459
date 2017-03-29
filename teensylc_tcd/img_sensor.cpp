@@ -3,6 +3,7 @@
 
 IntervalTimer sh_up, sh_down;
 uint16_t running_avg = 0;
+int initial = 0;
 
 void initialize_sensor() {
 	// stop interval timers
@@ -100,8 +101,15 @@ uint16_t wait_while_reading(int n) {
 
 	// Serial.println(num);
 	// Serial.println(min_i);
-	Serial.println(running_avg);
 	return running_avg;
+}
+
+int calibration() {
+	int val = 0;
+	for (uint8_t i = 0; i < CALIBRATION_N; i++) {
+		val += capture();
+	}
+	return val / CALIBRATION_N;
 }
 
 /* ISRs */

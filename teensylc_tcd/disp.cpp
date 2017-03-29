@@ -32,3 +32,7 @@ void update_disp(uint16_t num) {
 		num2disp(num);
 	}
 }
+
+float index2mm(uint16_t num){
+	return (SLOPE * (float) num) + OFFSET;
+}

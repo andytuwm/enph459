@@ -7,6 +7,8 @@
 #define TX1 1
 
 #define REFRESH_RATE 9
+#define SLOPE 1
+#define OFFSET 0
 
 extern SoftwareSerial S7Seg;
 
@@ -15,5 +17,6 @@ extern SoftwareSerial S7Seg;
 void initialize_disp();
 void num2disp(uint16_t num);
 void update_disp(uint16_t num);
+float index2mm(uint16_t num);
 
 #endif

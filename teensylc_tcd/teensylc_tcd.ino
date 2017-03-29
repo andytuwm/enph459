@@ -7,6 +7,7 @@
 #define LED_OFF() digitalWriteFast(LED,LOW)
 
 volatile bool in_measurement = false;
+volatile bool calibrating = false;
 volatile uint16_t last_measurement = 0;
 
 // Setup
@@ -28,8 +29,8 @@ void setup() {
     pinMode(B_LEFT, INPUT);
     pinMode(B_RIGHT, INPUT);
 
-    attachInterrupt(B_LEFT, led_on, RISING);
-    attachInterrupt(B_RIGHT, led_off, RISING);
+    attachInterrupt(B_LEFT, start_measurement, RISING);
+    attachInterrupt(B_RIGHT, end_measurement, RISING);
 
     // configure pwm pins 2,3,4 to set frequency
     analogWriteFrequency(pwm_out, master_clock_freq);
@@ -46,15 +47,15 @@ void setup() {
 }
 
 
-void led_on()
+void start_measurement()
 {
     cli();
     LED_ON();
-    in_measurement = true;
+    if (in_measurement == false) calibrating = true;
     sei();
 }
 
-void led_off()
+void end_measurement()
 {
     cli();
     LED_OFF();
@@ -65,8 +66,20 @@ void led_off()
 
 // Main Loop
 void loop() {
+
+    // calibration step before making measurements
+    if (calibrating == true) {
+        initial = calibration();
+        in_measurement = true;
+        calibrating = false;
+
+        Serial.print("CALIBRATED ");
+        Serial.println(initial);
+    }
+
     if (in_measurement == true) {
         last_measurement = capture();
+        Serial.println(last_measurement);
     }
 
     // Serial7Segment.write(0x76);
@@ -81,6 +94,6 @@ void loop() {
     // Serial7Segment.print((int) (2.68*100));
     // delay(500);
 
-    Serial.println("=================");
+    // Serial.println("=================");
 }
 
