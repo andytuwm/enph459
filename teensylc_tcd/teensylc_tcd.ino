@@ -79,7 +79,7 @@ void loop() {
 
     if (in_measurement == true) {
         last_measurement = capture();
-        Serial.println(last_measurement);
+        // Serial.println(last_measurement);
     }
 
     // Serial7Segment.write(0x76);

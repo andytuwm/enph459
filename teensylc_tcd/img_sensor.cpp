@@ -92,15 +92,24 @@ uint16_t wait_while_reading(int n) {
 		wait_clock_rising_counts(1);
 	}
 
+	//TODO convert peak index to a mm reading
+
+	// get saturated peak's other side's index
+	int k = n;
+	for (int j = min_i; j < n; j++) {
+		if (values[j] - values[min_i] > 2) {
+			k = j;
+			break;
+		}
+	}
+	// compute the central index
+	uint16_t min_avg = (k + min_i) / 2;
+
 	// compute running avg of peak readings
-	running_avg = (AVG_APLHA * min_i) + (1.0 - AVG_APLHA) * running_avg;
+	running_avg = (AVG_APLHA * min_avg) + (1.0 - AVG_APLHA) * running_avg;
 	// display peak reading
 	update_disp(running_avg);
 
-	//TODO convert peak index to a mm reading
-
-	// Serial.println(num);
-	// Serial.println(min_i);
 	return running_avg;
 }
 

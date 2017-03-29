@@ -6,7 +6,7 @@
 #define RX1 0
 #define TX1 1
 
-#define REFRESH_RATE 9
+#define REFRESH_RATE 8
 #define SLOPE 1
 #define OFFSET 0
 
