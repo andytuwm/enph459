@@ -18,6 +18,7 @@ void setup() {
     pinMode(LED, OUTPUT);
     pinMode(ICG, OUTPUT);
     pinMode(SH, OUTPUT);
+    pinMode(ADC_SWITCH, OUTPUT);
     pinMode(LSB, INPUT);
     pinMode(B2, INPUT);
     pinMode(B3, INPUT);
@@ -37,6 +38,8 @@ void setup() {
     // configure pwm resolution to allow up to 1.5 MHz
     analogWriteResolution(5);
 
+    // ensure ADC is off when unused
+    digitalWriteFast(ADC_SWITCH, HIGH);
     // configure ICG, SH states, start master clock
     initialize_sensor();
     // intialize and configure 7 seg display
@@ -51,7 +54,11 @@ void start_measurement()
 {
     cli();
     LED_ON();
-    if (in_measurement == false) calibrating = true;
+    if (in_measurement == false) {
+        calibrating = true;
+        // turn on ADC
+        digitalWriteFast(ADC_SWITCH, LOW);
+    }
     sei();
 }
 
@@ -59,6 +66,8 @@ void end_measurement()
 {
     cli();
     LED_OFF();
+    // turn off ADC
+    digitalWriteFast(ADC_SWITCH, HIGH);
     in_measurement = false;
     update_disp(last_measurement);
     sei();
@@ -79,7 +88,7 @@ void loop() {
 
     if (in_measurement == true) {
         last_measurement = capture();
-        // Serial.println(last_measurement);
+        Serial.println(last_measurement);
     }
 
     // Serial7Segment.write(0x76);

@@ -26,6 +26,8 @@
 #define B2 20
 #define LSB 21
 
+#define ADC_SWITCH 12
+
 // Buttons
 #define B_LEFT 22
 #define B_RIGHT 23
@@ -41,7 +43,7 @@
 #define T1_PULSE_COUNT 18
 #define SYNC_PULSE_COUNT 23
 
-#define AVG_APLHA 0.1 //prev value 0.07
+#define AVG_APLHA 0.05 //prev value 0.07
 #define CALIBRATION_N 10
 
 #define ICG_HIGH() digitalWriteFast(ICG,HIGH)

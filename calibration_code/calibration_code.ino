@@ -7,6 +7,8 @@
 #define LED_OFF() digitalWriteFast(LED,LOW)
 
 volatile bool calibrating = false;
+volatile bool getting_initial = false;
+uint16_t initial_value = 10000;
 
 // Setup
 void setup() {
@@ -25,8 +27,10 @@ void setup() {
     pinMode(B6, INPUT);
     pinMode(B7, INPUT);
     pinMode(MSB, INPUT);
+    pinMode(B_LEFT, INPUT);
     pinMode(B_RIGHT, INPUT);
 
+    attachInterrupt(B_LEFT, get_initial_position, RISING);
     attachInterrupt(B_RIGHT, calibrate_start, RISING);
 
     // configure pwm pins 2,3,4 to set frequency
@@ -45,8 +49,16 @@ void setup() {
     Serial.begin(9600);
 }
 
-void calibrate_start()
-{
+void get_initial_position() {
+    cli();
+    if (getting_initial == false) {
+        LED_ON();
+        getting_initial = true;
+    }
+    sei();
+}
+
+void calibrate_start() {
     cli();
     if (calibrating == false) {
         LED_ON();
@@ -57,17 +69,44 @@ void calibrate_start()
 
 // Main Loop
 void loop() {
+    if (getting_initial == true) {
+        initial_value = calibration(30);
+        Serial.print("CALIBRATED ");
+        Serial.println(initial_value);
+        // stop calibration
+        update_disp(initial_value);
+
+        LED_OFF();
+        delay(300);
+        LED_ON();
+        delay(100);
+        LED_OFF();
+        delay(100);
+        LED_ON();
+        delay(100);
+        LED_OFF();
+
+        getting_initial = false;
+    }
 
     // calibrate
     if (calibrating == true) {
-        initial = calibration(30);
-        Serial.print("CALIBRATED ");
-        Serial.println(initial);
+        int val = calibration(30);
+
+        int displacement;
+        if (val > initial_value) {
+            displacement = val - initial_value;
+        } else {
+            displacement = initial_value - val;
+        }
+
+        Serial.print("MEASURED ");
+        Serial.println(displacement);
         // stop calibration
-        update_disp(initial);
+        update_disp(displacement);
         calibrating = false;
         LED_OFF();
+        delay(500);
     }
-    delay(500);
 }
 

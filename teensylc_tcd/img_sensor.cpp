@@ -76,20 +76,32 @@ uint16_t wait_while_reading(int n) {
 		b1 = digitalReadFast(LSB);
 		b2 = digitalReadFast(B2);
 		b3 = digitalReadFast(B3);
+		// wait_for_rising_edge();
 		b4 = digitalReadFast(B4);
+
+
+
 		b5 = digitalReadFast(B5);
 		b6 = digitalReadFast(B6);
-		
-		wait_clock_rising_counts(1);
+
+
 
 		b7 = digitalReadFast(B7);
+		// wait_for_falling_edge();
 		b8 = digitalReadFast(MSB);
+		wait_clock_rising_counts(1);
+
 
 		values[c] = b8 << 7 | b7 << 6 | b6 << 5 | b5 << 4 | b4 << 3 | b3 << 2 | b2 << 1 | b1;
+
+		// wait_for_rising_edge();
+
 		if (values[c] < num) {
 			num = values[c];
 			min_i = c;
 		}
+
+		// wait_for_falling_edge();
 
 		wait_clock_rising_counts(1);
 	}
