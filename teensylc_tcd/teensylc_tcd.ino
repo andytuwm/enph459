@@ -81,7 +81,6 @@ void loop() {
         initial = calibration();
         in_measurement = true;
         calibrating = false;
-
         Serial.print("CALIBRATED ");
         Serial.println(initial);
     }
