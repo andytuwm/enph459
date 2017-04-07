@@ -2,6 +2,7 @@
 #define DISP_H
 
 #include <SoftwareSerial.h>
+#include <Arduino.h>
 
 #define RX1 0
 #define TX1 1
