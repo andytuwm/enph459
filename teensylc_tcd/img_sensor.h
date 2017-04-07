@@ -44,7 +44,7 @@
 #define SYNC_PULSE_COUNT 23
 
 #define AVG_APLHA 0.05 //prev value 0.07
-#define CALIBRATION_N 10
+#define CALIBRATION_N 15
 
 #define ICG_HIGH() digitalWriteFast(ICG,HIGH)
 #define ICG_LOW() digitalWriteFast(ICG,LOW)

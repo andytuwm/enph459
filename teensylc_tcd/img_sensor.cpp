@@ -71,42 +71,29 @@ uint16_t wait_while_reading(int n) {
 	uint16_t min_i;
 
 	for (uint16_t c = 0; c < n; c++) {
-		// wait two periods
+		// wait two periods total
 
 		b1 = digitalReadFast(LSB);
 		b2 = digitalReadFast(B2);
 		b3 = digitalReadFast(B3);
-		// wait_for_rising_edge();
 		b4 = digitalReadFast(B4);
-
-
-
 		b5 = digitalReadFast(B5);
 		b6 = digitalReadFast(B6);
 
-
-
-		b7 = digitalReadFast(B7);
-		// wait_for_falling_edge();
-		b8 = digitalReadFast(MSB);
 		wait_clock_rising_counts(1);
 
+		b7 = digitalReadFast(B7);
+		b8 = digitalReadFast(MSB);
 
 		values[c] = b8 << 7 | b7 << 6 | b6 << 5 | b5 << 4 | b4 << 3 | b3 << 2 | b2 << 1 | b1;
-
-		// wait_for_rising_edge();
 
 		if (values[c] < num) {
 			num = values[c];
 			min_i = c;
 		}
 
-		// wait_for_falling_edge();
-
 		wait_clock_rising_counts(1);
 	}
-
-	//TODO convert peak index to a mm reading
 
 	// get saturated peak's other side's index
 	int k = n;
@@ -122,7 +109,7 @@ uint16_t wait_while_reading(int n) {
 	// compute running avg of peak readings
 	running_avg = (AVG_APLHA * min_avg) + (1.0 - AVG_APLHA) * running_avg;
 	// display peak reading
-	update_disp(running_avg);
+	update(running_avg, initial);
 
 	return running_avg;
 }

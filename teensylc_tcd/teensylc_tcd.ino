@@ -88,21 +88,6 @@ void loop() {
 
     if (in_measurement == true) {
         last_measurement = capture();
-        Serial.println(last_measurement);
     }
-
-    // Serial7Segment.write(0x76);
-    // Serial7Segment.print((int)(20.68 * 100));
-    // Serial7Segment.write(0x77);
-    // Serial7Segment.write(0b000010);
-    // delay(500);
-    // Serial7Segment.write(0x76);
-    // Serial.write(0x79); // Send the Move Cursor Command
-    // Serial.write(0x01); // Send the data byte, with value 1
-    // Serial7Segment.write(" ");
-    // Serial7Segment.print((int) (2.68*100));
-    // delay(500);
-
-    // Serial.println("=================");
 }
 
