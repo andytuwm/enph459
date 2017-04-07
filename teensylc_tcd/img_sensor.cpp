@@ -94,8 +94,6 @@ uint16_t wait_while_reading(int n) {
 		wait_clock_rising_counts(1);
 	}
 
-	//TODO convert peak index to a mm reading
-
 	// get saturated peak's other side's index
 	int k = n;
 	for (int j = min_i; j < n; j++) {
